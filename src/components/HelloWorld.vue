@@ -1,125 +1,87 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br />
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener"
-        >vue-cli documentation</a
-      >.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel"
-          target="_blank"
-          rel="noopener"
-          >babel</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router"
-          target="_blank"
-          rel="noopener"
-          >router</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-vuex"
-          target="_blank"
-          rel="noopener"
-          >vuex</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
-          target="_blank"
-          rel="noopener"
-          >eslint</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript"
-          target="_blank"
-          rel="noopener"
-          >typescript</a
-        >
-      </li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li>
-        <a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a>
-      </li>
-      <li>
-        <a href="https://forum.vuejs.org" target="_blank" rel="noopener"
-          >Forum</a
-        >
-      </li>
-      <li>
-        <a href="https://chat.vuejs.org" target="_blank" rel="noopener"
-          >Community Chat</a
-        >
-      </li>
-      <li>
-        <a href="https://twitter.com/vuejs" target="_blank" rel="noopener"
-          >Twitter</a
-        >
-      </li>
-      <li>
-        <a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a>
-      </li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li>
-        <a href="https://router.vuejs.org" target="_blank" rel="noopener"
-          >vue-router</a
-        >
-      </li>
-      <li>
-        <a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-devtools#vue-devtools"
-          target="_blank"
-          rel="noopener"
-          >vue-devtools</a
-        >
-      </li>
-      <li>
-        <a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener"
-          >vue-loader</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-          rel="noopener"
-          >awesome-vue</a
-        >
-      </li>
-    </ul>
+  <div>
+    <div>Hellow World</div>
+    <div>
+      title ---> <input class="title" type="text" v-model="form.title" />
+    </div>
+    <div>
+      contnet ---> <input class="content" type="text" v-model="form.content" />
+    </div>
+    <div>
+      <button ref="button" class="button">추가</button>
+      <button ref="button" class="button" @click="reset()">Reset</button>
+    </div>
+    <List :list="list" />
+    <div>총 개수 {{ listLength }}</div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { data } from "../util/dump";
+import List from "./List.vue";
 
-@Component
+interface From {
+  title: string;
+  content: string;
+}
+interface Item {
+  key: number;
+  title: string;
+  content: string;
+}
+
+@Component({
+  components: {
+    List,
+  },
+})
 export default class HelloWorld extends Vue {
-  @Prop() private msg!: string;
+  list: Item[] = [{ key: 1, title: "1", content: "1" }];
+  form: From = {
+    title: "",
+    content: "",
+  };
+  //count: number = 7;
+
+  created() {
+    this.list = data;
+    console.log("created", this.list);
+  }
+
+  mounted() {
+    console.log("mounted", this.list);
+  }
+
+  updated() {
+    console.log("updated");
+  }
+
+  get listLength() {
+    return this.list.length;
+  }
+
+  @Watch("form.title", { immediate: true, deep: true })
+  public changeTitle(value: string) {
+    console.log("change title", value);
+  }
+
+  @Watch("form.content", { immediate: true, deep: true })
+  public chagneContent(value: string) {
+    console.log("change content", value);
+  }
+
+  reset() {
+    this.form.title = "";
+    this.form.content = "";
+  }
+
+  // add() {
+  //   this.count = this.count + 1;
+  // }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40px 0 0;
