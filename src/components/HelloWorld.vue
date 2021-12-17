@@ -42,43 +42,43 @@ export default class HelloWorld extends Vue {
     title: "",
     content: "",
   };
-  //count: number = 7;
+  count = 7;
 
-  created() {
-    this.list = data;
-    console.log("created", this.list);
-  }
-
-  mounted() {
+  mounted(): void {
     console.log("mounted", this.list);
   }
 
-  updated() {
+  updated(): void {
     console.log("updated");
   }
 
-  get listLength() {
+  get listLength(): number {
     return this.list.length;
   }
 
   @Watch("form.title", { immediate: true, deep: true })
-  public changeTitle(value: string) {
+  public changeTitle(value: string): void {
     console.log("change title", value);
   }
 
   @Watch("form.content", { immediate: true, deep: true })
-  public chagneContent(value: string) {
+  public chagneContent(value: string): void {
     console.log("change content", value);
   }
 
-  reset() {
+  reset(): void {
     this.form.title = "";
     this.form.content = "";
   }
 
-  // add() {
-  //   this.count = this.count + 1;
-  // }
+  created(): void {
+    this.list = data;
+    console.log("created", this.list);
+  }
+
+  add(): void {
+    this.count = this.count + 1;
+  }
 }
 </script>
 
